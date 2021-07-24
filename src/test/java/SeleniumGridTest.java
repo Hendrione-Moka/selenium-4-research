@@ -52,14 +52,14 @@ public class SeleniumGridTest {
     actions.moveToElement(buttonShowTable).pause(Duration.of(2, ChronoUnit.SECONDS)).build()
         .perform();
     waitAbit(5);
-//    //relative locators
-//    WebElement quoteRow = driver
-//        .findElement(By.xpath("//td[contains(text(), 'There is a will there is a way')]"));
-//    //ngebug lol
-//    //WebElement colorData = driver.findElement(RelativeLocator.with(By.name("tableColumnColor")).toRightOf(quoteRow));
-//    WebElement colorData = driver
-//        .findElement(RelativeLocator.with(By.name("tableColumnColor")).near(quoteRow));
-//    System.out.println(colorData.getText());
+    //relative locators
+    WebElement quoteRow = driver
+        .findElement(By.xpath("//td[contains(text(), 'There is a will there is a way')]"));
+    //ngebug lol
+    //WebElement colorData = driver.findElement(RelativeLocator.with(By.name("tableColumnColor")).toRightOf(quoteRow));
+    WebElement colorData = driver
+        .findElement(RelativeLocator.with(By.name("tableColumnColor")).near(quoteRow));
+    System.out.println(colorData.getText());
 
   }
 

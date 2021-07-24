@@ -39,7 +39,7 @@ services:
   chrome_video:
     image: selenium/video:ffmpeg-4.3.1-20210713
     volumes:
-      - /Users/hendrione/Code/selenium-4-research/videos:/videos
+      - ./videos:/videos
     depends_on:
       - chrome
     environment:
@@ -49,7 +49,7 @@ services:
   edge_video:
     image: selenium/video:ffmpeg-4.3.1-20210713
     volumes:
-      - /Users/hendrione/Code/selenium-4-research/videos:/videos
+      - ./videos:/videos
     depends_on:
       - edge
     environment:
@@ -59,7 +59,7 @@ services:
   firefox_video:
     image: selenium/video:ffmpeg-4.3.1-20210713
     volumes:
-      - /Users/hendrione/Code/selenium-4-research/videos:/videos
+      - ./videos:/videos
     depends_on:
       - firefox
     environment:
