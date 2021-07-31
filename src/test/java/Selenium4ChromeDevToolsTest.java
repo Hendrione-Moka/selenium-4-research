@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.devtools.DevTools;
 import org.openqa.selenium.devtools.v91.emulation.Emulation;
 import org.openqa.selenium.devtools.v91.network.Network;
+import org.openqa.selenium.devtools.v91.network.Network.GetResponseBodyResponse;
 import org.openqa.selenium.devtools.v91.network.model.ConnectionType;
 import org.openqa.selenium.devtools.v91.security.Security;
 import org.openqa.selenium.remote.http.HttpResponse;
@@ -98,6 +99,17 @@ public class Selenium4ChromeDevToolsTest {
   }
 
   @Test
+  public void setTimezoneTest() {
+    //initiate devtools
+    DevTools devtools = ((ChromeDriver) driver).getDevTools();
+    devtools.createSession();
+    devtools.send(Emulation.setTimezoneOverride("Europe/Amsterdam"));
+    driver.get("https://webbrowsertools.com/timezone/");
+    waitAbit(10);
+  }
+
+
+  @Test
   public void emulate2GNetwork() {
     //initiate devtools
     DevTools devtools = ((ChromeDriver) driver).getDevTools();
@@ -178,6 +190,25 @@ public class Selenium4ChromeDevToolsTest {
     DevTools devtools = ((ChromeDriver) driver).getDevTools();
     devtools.createSession();
     devtools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
+    devtools.addListener(Network.requestWillBeSent(), entry -> {
+      if (entry.getRequest().getUrl().contains("api.mygostore.com/catalog/v1/outlet")) {
+        System.out.println("Request (id) URL      : (" + entry.getRequestId() + ") "
+            + entry.getRequest().getUrl()
+            + " (" + entry.getRequest().getMethod() + ")");
+      }
+    });
+
+    devtools.addListener(Network.responseReceived(), entry -> {
+      if (entry.getResponse().getUrl().contains("api.mygostore.com/catalog/v1/outlet")) {
+        System.out.println("Response (Req id) URL : (" + entry.getRequestId() + ") "
+            + entry.getResponse().getUrl()
+            + " (" + entry.getResponse().getStatus() + ")");
+        GetResponseBodyResponse body = devtools
+            .send(Network.getResponseBody(entry.getRequestId()));
+        System.out.println(body.getBody());
+      }
+    });
+
     driver.get("https://japfabest.mygostore.com/");
     //need further research since this the function deprecated.
     driver.navigate().refresh();
